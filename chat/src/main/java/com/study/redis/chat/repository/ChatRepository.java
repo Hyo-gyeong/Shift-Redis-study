@@ -1,5 +1,9 @@
 package com.study.redis.chat.repository;
 
-public interface ChatRepository implements J{
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.study.redis.chat.entity.ChatEntity;
+
+public interface ChatRepository extends JpaRepository<ChatEntity, Long>{
 
 }
