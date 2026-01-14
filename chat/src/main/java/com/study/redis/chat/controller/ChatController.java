@@ -25,6 +25,7 @@ public class ChatController {
 	
 	@GetMapping()
 	public List<ChatResponseDTO> getChatList(){
+		chatService.getAllChat();
 		return null;
 	}
 	

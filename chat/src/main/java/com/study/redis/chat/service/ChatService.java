@@ -1,5 +1,7 @@
 package com.study.redis.chat.service;
 
+import java.util.List;
+
 import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -7,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.study.redis.chat.dao.ChatDAO;
 import com.study.redis.chat.dto.ChatRequestDTO;
+import com.study.redis.chat.dto.ChatResponseDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,5 +39,9 @@ public class ChatService {
 	        throw new RuntimeException("예상치 못한 오류가 발생했습니다.", e);
 	    }
 		return;
+	}
+	
+	public List<ChatResponseDTO> getAllChat(){
+		return chatDAO.getAllChat();
 	}
 }
