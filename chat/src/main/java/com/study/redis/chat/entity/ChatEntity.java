@@ -1,6 +1,6 @@
 package com.study.redis.chat.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +34,6 @@ public class ChatEntity {
 	)
 	private long pk;
 	private String message;
-	private Date dateTime;
+	private LocalDateTime  dateTime;
 	private long userId;
 }

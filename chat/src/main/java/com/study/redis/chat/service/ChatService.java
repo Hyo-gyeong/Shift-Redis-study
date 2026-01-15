@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.study.redis.chat.dao.ChatDAO;
 import com.study.redis.chat.dto.ChatRequestDTO;
 import com.study.redis.chat.dto.ChatResponseDTO;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,10 +24,10 @@ public class ChatService {
 	
 	@Transactional
 	public void sendAndSaveMessage(ChatRequestDTO dto) {
-		chatDAO.saveChat(dto);
+		ChatResponseDTO savedMessage = chatDAO.saveChat(dto);
 		
 		try {
-			messagingTemplate.convertAndSend("/sub/messages", dto);
+			messagingTemplate.convertAndSend("/sub/chat", savedMessage);
 		} catch (MessagingException e) {
 	        // 메시지 전송 실패 시 상세 로그 출력
 	        log.error("Failed to send message : {}", e.getMessage(), e);

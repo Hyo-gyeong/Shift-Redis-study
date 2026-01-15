@@ -1,7 +1,7 @@
 package com.study.redis.chat.dao;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -19,12 +19,23 @@ public class ChatDAO {
 	
 	private final ChatRepository chatRepo;
 	
-	public void saveChat(ChatRequestDTO dto) {
-		ChatEntity entity = new ChatEntity();
-		entity.setDateTime(new Date());
-		entity.setMessage(dto.getMessage());
-		entity.setUserId(dto.getUserId());
-		chatRepo.save(entity);
+	public ChatResponseDTO saveChat(ChatRequestDTO dto) {
+	    ChatEntity entity = new ChatEntity();
+	    entity.setDateTime(LocalDateTime.now());
+	    entity.setMessage(dto.getMessage());
+	    entity.setUserId(dto.getUserId());
+	    
+	    // 저장된 엔티티 반환
+	    ChatEntity savedEntity = chatRepo.save(entity);
+	    
+	    // ChatResponseDTO로 변환해서 반환
+	    ChatResponseDTO response = new ChatResponseDTO();
+	    response.setPk(savedEntity.getPk());
+	    response.setUserId(savedEntity.getUserId());
+	    response.setMessage(savedEntity.getMessage());
+	    response.setDateTime(savedEntity.getDateTime());
+	    
+	    return response;
 	}
 	
 	public List<ChatResponseDTO> getAllChat(){
