@@ -30,7 +30,7 @@ public class ChatController {
 	
 	@MessageMapping("/send")
 	public void sendChat(@Payload ChatRequestDTO dto) {
-		chatService.sendAndSaveMessage(dto);
+		chatService.sendMessage(dto);
 	}
 
 }
