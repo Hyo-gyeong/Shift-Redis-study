@@ -1,35 +1,33 @@
 package com.study.redis.session;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class SessionStore {
-    // 세션ID를 key로, 사용자 정보를 value로 저장하는 Map
-    // ConcurrentHashMap: 멀티스레드 환경에서 안전
-    private final Map<String, SessionUser> store = new ConcurrentHashMap<>();
+
+    private final RedisTemplate<String, SessionUser> redisTemplate;
 
     public void save(String sessionId, String userId) {
-        // 세션 만료 시간을 현재 시간 + 30분으로 설정
-        LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(30);
-        store.put(sessionId, new SessionUser(userId, expiredAt));
+    	int sessionDurationMinutes = 2;
+        SessionUser user = new SessionUser(userId, sessionId, LocalDateTime.now().plusMinutes(sessionDurationMinutes));
+
+        // Redis에 저장 + TTL 설정
+        redisTemplate.opsForValue()
+                     .set("session", user, Duration.ofMinutes(sessionDurationMinutes));
     }
 
     public SessionUser get(String sessionId) {
-        SessionUser user = store.get(sessionId);
-        // 세션이 없거나 만료
-        if (user == null || user.getExpiredAt().isBefore(LocalDateTime.now())) {
-            store.remove(sessionId);
-            return null;
-        }
-        return user;
+        return redisTemplate.opsForValue().get(sessionId);
     }
 
-    // 로그아웃 시 세션 제거
     public void remove(String sessionId) {
-        store.remove(sessionId);
+        redisTemplate.delete(sessionId);
     }
 }

@@ -9,5 +9,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class SessionUser { // 세션에 매핑된 사용자 정보
     private String userId;
+    private String sessionId;
     private LocalDateTime expiredAt;
 }
