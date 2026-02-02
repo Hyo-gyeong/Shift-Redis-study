@@ -1,4 +1,4 @@
-package com.study.redis.session;
+package com.study.redis.session.test;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
