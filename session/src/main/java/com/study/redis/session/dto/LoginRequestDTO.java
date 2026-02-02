@@ -1,4 +1,4 @@
-package com.study.redis.session;
+package com.study.redis.session.dto;
 
 import lombok.Getter;
 import lombok.Setter;
