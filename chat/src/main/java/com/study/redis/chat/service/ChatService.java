@@ -31,9 +31,7 @@ public class ChatService {
 
 	    // 2. Redis에 임시 저장 (Write-Back)
 	    try {
-	        redisTemplate.opsForList()
-	            .rightPush("chat:pending", message);
-	        log.info("Message is successfully sent!");
+	        redisTemplate.opsForList().rightPush("chat:pending", message);
 	    } catch (Exception e) {
 	        log.error("Redis write failed", e);
 	    }
@@ -53,13 +51,12 @@ public class ChatService {
 		return;
 	}
 	
-	
 	public List<ChatResponseDTO> getAllChat(){	
 		try {
 	        // 1. Redis 조회
 	        List<ChatResponseDTO> cached =
 	            redisTemplate.opsForList().range("chat:messages", 0, -1);
-	        log.info("cache len {}", cached.size());
+
 	        if (cached != null && !cached.isEmpty()) {
 	            return cached.stream()
 	                .map(o -> (ChatResponseDTO) o)
